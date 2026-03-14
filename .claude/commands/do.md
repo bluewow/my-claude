@@ -122,6 +122,10 @@ Agent(
 - `{TASK_DESCRIPTION}`: `$ARGUMENTS` + 트리아지에서 수집된 추가 정보 (있는 경우)
 - `{TRIAGE_CONTEXT}`: 트리아지 결과 요약 (관련 파일, 선택된 수정 방향 등). 트리아지에서 특별한 컨텍스트가 없으면 빈 문자열.
 - `{TASK_ID}`, `{TASK_FOLDER}`: 실제 값으로 치환
+- `{TASK_SLUG}`: ID에서 숫자 제외한 slug 부분
+- `{TASK_NAME}`: 작업 요약 (한 줄)
+- `{TODAY}`: 오늘 날짜 YYYY-MM-DD
+- `{TASK_DESCRIPTION_SHORT}`: 작업 설명 30자 이내 요약
 
 ---
 
@@ -135,6 +139,28 @@ Agent(
 ## 트리아지 컨텍스트
 
 {TRIAGE_CONTEXT}
+
+## Step 0: history.json 초기 엔트리 보장 ← 반드시 먼저 실행
+
+백그라운드 에이전트 시작 직후 즉시 수행합니다.
+
+1. `output/history.json` Read
+2. `{TASK_ID}` 엔트리가 없으면 배열 끝에 추가:
+   ```json
+   {
+     "id": "{TASK_ID}",
+     "slug": "{TASK_SLUG}",
+     "name": "{TASK_NAME}",
+     "path": "output/tasks/{TASK_ID}",
+     "logs": [
+       { "phase": "작업", "status": "진행중", "date": "{TODAY}", "note": "{TASK_DESCRIPTION_SHORT}" }
+     ]
+   }
+   ```
+3. Write로 저장
+4. Read로 재확인
+
+엔트리가 이미 있으면 건너뜁니다.
 
 ## Step 1: 범위 파악
 
