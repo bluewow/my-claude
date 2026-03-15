@@ -206,6 +206,7 @@ brief.md:
   "slug": "[한국어slug]",
   "name": "[기능/개선명]",
   "path": "output/tasks/[ID]-[한국어slug]",
+  "artifacts": ["[idea.html|design.html]", "brief.md"],
   "logs": [
     {
       "phase": "[기획|디자인]",

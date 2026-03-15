@@ -94,6 +94,7 @@ options:
   "slug": "[slug]",
   "name": "[작업 요약]",
   "path": "output/tasks/[ID]-[slug]",
+  "artifacts": [],
   "logs": [
     {
       "phase": "작업",
@@ -152,6 +153,7 @@ Agent(
      "slug": "{TASK_SLUG}",
      "name": "{TASK_NAME}",
      "path": "output/tasks/{TASK_ID}",
+     "artifacts": [],
      "logs": [
        { "phase": "작업", "status": "진행중", "date": "{TODAY}", "note": "{TASK_DESCRIPTION_SHORT}" }
      ]
@@ -237,8 +239,9 @@ complete.md 저장 후 즉시 수행합니다. 이 단계를 빠뜨리면 대시
    ```json
    { "phase": "작업", "status": "완료", "date": "[날짜]", "note": "구현 + 에러체크 완료" }
    ```
-3. Write로 저장
-4. Read로 재확인 — logs에 실제로 추가됐는지 검증
+3. 해당 태스크의 `artifacts` 배열에 `"complete.md"` 추가 (이미 없는 경우만)
+4. Write로 저장
+5. Read로 재확인 — logs와 artifacts가 실제로 추가됐는지 검증
 ```
 
 ---
