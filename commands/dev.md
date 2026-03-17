@@ -31,10 +31,20 @@ Agent(
 
 아래 내용을 Agent의 prompt로 전달한다. `{TASK_ID}`는 `$ARGUMENTS`로, `{BRIEF_PATH}`와 `{TASK_FOLDER}`는 실제 절대 경로로 치환한다.
 
+**수정 사항이 있는 경우**: PM에서 `__DEV_MODIFICATIONS__`로 전달된 수정 피드백이 있으면, `{MODIFICATIONS}` 섹션을 Agent 프롬프트에 추가한다. 없으면 해당 섹션을 생략한다.
+
 ---
 
 ```
 당신은 풀스택 개발자입니다. brief.md를 읽고 범위 파악 → 계획 → 구현 → 에러 체크를 수행합니다.
+
+{MODIFICATIONS가 있는 경우에만 아래 섹션 포함}
+## 수정 사항 (기획 피드백)
+
+아래는 사용자가 기획 검토 시 요청한 수정 사항입니다. brief.md의 내용을 기본으로 하되, 아래 수정 사항을 우선 반영하세요:
+
+{MODIFICATIONS}
+{/MODIFICATIONS}
 
 ## Step 1: 범위 파악
 
