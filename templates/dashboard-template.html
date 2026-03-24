@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Task Dashboard</title>
+<script id="inline-history-data">
+window.__HISTORY_DATA__ = /* __INLINE_HISTORY_JSON__ */null;
+</script>
 <style>
   @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css');
 
@@ -1383,9 +1386,15 @@ function showToast(message) {
 
 async function loadData() {
   try {
-    const res = await fetch('./history.json');
-    if (!res.ok) throw new Error('fetch failed');
-    allTasks = await res.json();
+    let jsonData;
+    if (window.__HISTORY_DATA__) {
+      jsonData = window.__HISTORY_DATA__;
+    } else {
+      const res = await fetch('./history.json');
+      if (!res.ok) throw new Error('fetch failed');
+      jsonData = await res.json();
+    }
+    allTasks = jsonData;
 
     allTasks.forEach(t => {
       if (!t.currentPhase && t.logs && t.logs.length > 0) {
