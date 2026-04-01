@@ -1,86 +1,86 @@
-# Design Analysis Guide
+# 디자인 분석 가이드
 
-Systematic approach to extracting actionable design patterns from reference images.
+레퍼런스 이미지에서 실행 가능한 디자인 패턴을 체계적으로 추출하는 접근법입니다.
 
-## Color Extraction
+## 색상 추출
 
-When analyzing reference images for color:
+레퍼런스 이미지에서 색상을 분석할 때:
 
-1. **Primary color**: The most dominant non-neutral color
-2. **Secondary color**: Supporting color used for accents or sections
-3. **Neutral palette**: Background, surface, and text colors
-4. **Semantic colors**: Success (green), warning (amber), error (red), info (blue)
-5. **Gradient patterns**: Direction, color stops, opacity transitions
+1. **주요 색상**: 가장 지배적인 비중립 색상
+2. **보조 색상**: 액센트나 섹션에 사용되는 보조 색상
+3. **중립 팔레트**: 배경, 표면, 텍스트 색상
+4. **시맨틱 색상**: 성공(녹색), 경고(주황), 에러(빨강), 정보(파랑)
+5. **그라디언트 패턴**: 방향, 색상 정지점, 투명도 전환
 
-Map extracted colors to existing CSS variables in `globals.css` where possible. Create new variables only for genuinely new colors.
+추출한 색상은 가능한 `globals.css`의 기존 CSS 변수에 매핑합니다. 진정으로 새로운 색상이 필요한 경우에만 새 변수를 생성합니다.
 
-## Typography Patterns
+## 타이포그래피 패턴
 
-Extract from reference images:
+레퍼런스 이미지에서 추출할 항목:
 
-| Property | What to look for |
-|----------|-----------------|
-| Headings | Weight (bold/black), size ratio to body, letter-spacing |
-| Body text | Line-height, font-size, paragraph spacing |
-| Labels | Uppercase usage, tracking (letter-spacing), font-weight |
-| Hierarchy | How many distinct text levels visible |
+| 속성 | 확인할 점 |
+|------|----------|
+| 헤딩 | 굵기 (bold/black), 본문 대비 크기 비율, 자간 |
+| 본문 텍스트 | 행간, 글자 크기, 단락 간격 |
+| 라벨 | 대문자 사용 여부, 트래킹(자간), 글자 굵기 |
+| 계층 구조 | 식별 가능한 텍스트 레벨 수 |
 
-## Spacing System
+## 간격 시스템
 
-Identify the spacing rhythm:
+간격 리듬을 파악합니다:
 
-- **Base unit**: Most common smallest gap (4px, 8px, etc.)
-- **Scale**: How spacing grows (linear: 8/16/24, or geometric: 4/8/16/32)
-- **Padding patterns**: Card inner padding, section padding
-- **Gap patterns**: Space between cards, list items, form fields
+- **기본 단위**: 가장 흔한 최소 간격 (4px, 8px 등)
+- **스케일**: 간격 증가 방식 (선형: 8/16/24, 또는 기하: 4/8/16/32)
+- **패딩 패턴**: 카드 내부 패딩, 섹션 패딩
+- **갭 패턴**: 카드 사이, 리스트 항목 사이, 폼 필드 사이 간격
 
-## Component Patterns
+## 컴포넌트 패턴
 
-### Cards
-- Corner radius (sharp, slightly rounded, very rounded, pill)
-- Shadow depth (flat, subtle, elevated, dramatic)
-- Border usage (none, hairline, prominent)
-- Background (solid, gradient, glass/blur)
+### 카드
+- 모서리 반경 (직각, 약간 둥근, 매우 둥근, 필)
+- 그림자 깊이 (플랫, 미묘, 부각, 드라마틱)
+- 테두리 사용 (없음, 헤어라인, 두꺼운)
+- 배경 (단색, 그라디언트, 글래스/블러)
 
-### Buttons
-- Shape (rectangle, rounded, pill)
-- Fill style (solid, outline, ghost, gradient)
-- Size variants visible
-- Hover/active state clues
+### 버튼
+- 형태 (직사각형, 라운드, 필)
+- 채우기 스타일 (솔리드, 아웃라인, 고스트, 그라디언트)
+- 확인 가능한 크기 변형
+- 호버/활성 상태 단서
 
-### Navigation
-- Position (top, side, bottom)
-- Style (tabs, links, icons, pills)
-- Active state indicator
+### 네비게이션
+- 위치 (상단, 사이드, 하단)
+- 스타일 (탭, 링크, 아이콘, 필)
+- 활성 상태 표시기
 
-### Forms
-- Input style (underline, bordered, filled)
-- Label position (above, floating, inline)
-- Validation display pattern
+### 폼
+- 인풋 스타일 (밑줄, 테두리, 채움)
+- 라벨 위치 (상단, 플로팅, 인라인)
+- 유효성 검사 표시 패턴
 
-## Mood & Atmosphere
+## 무드 & 분위기
 
-Classify the overall design feeling:
+전체적인 디자인 느낌을 분류합니다:
 
-| Dimension | Spectrum |
-|-----------|----------|
-| Weight | Light ←→ Heavy |
-| Temperature | Cool ←→ Warm |
-| Formality | Casual ←→ Formal |
-| Density | Spacious ←→ Dense |
-| Motion | Static ←→ Dynamic |
-| Complexity | Minimal ←→ Rich |
+| 차원 | 스펙트럼 |
+|------|----------|
+| 무게감 | 가벼운 ←→ 무거운 |
+| 온도 | 차가운 ←→ 따뜻한 |
+| 격식 | 캐주얼 ←→ 포멀 |
+| 밀도 | 여유로운 ←→ 조밀한 |
+| 동적성 | 정적 ←→ 동적 |
+| 복잡도 | 미니멀 ←→ 풍부한 |
 
-## Applying Analysis to Code
+## 분석 결과를 코드에 적용
 
-After analysis, translate findings into concrete CSS:
+분석 후, 결과를 구체적인 CSS로 변환합니다:
 
 ```css
-/* Example: Extracted from reference showing soft, modern card UI */
---ref-radius: 24px;        /* Very rounded corners observed */
---ref-shadow: 0 8px 32px rgba(0,0,0,0.08);  /* Soft elevated shadow */
---ref-padding: 24px;       /* Generous inner padding */
---ref-gap: 16px;           /* Consistent spacing between elements */
+/* 예시: 부드럽고 모던한 카드 UI 레퍼런스에서 추출 */
+--ref-radius: 24px;        /* 매우 둥근 모서리 관찰 */
+--ref-shadow: 0 8px 32px rgba(0,0,0,0.08);  /* 부드러운 부각 그림자 */
+--ref-padding: 24px;       /* 넉넉한 내부 패딩 */
+--ref-gap: 16px;           /* 일관된 요소 간 간격 */
 ```
 
-Compare with existing project tokens before adding new ones. Prefer extending the existing system over creating parallel variables.
+새 변수를 추가하기 전에 기존 프로젝트 토큰과 비교합니다. 병렬 변수를 만들기보다 기존 시스템을 확장하는 것을 선호합니다.

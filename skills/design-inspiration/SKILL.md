@@ -1,118 +1,118 @@
 ---
 name: Design Inspiration
-description: This skill should be used when the user asks to "create a UI component", "design a page", "update the design", "change styles", "build a new screen", or when any frontend design work involves creating or modifying CSS, HTML templates, or React components. It provides design reference images that Claude should analyze and match when generating new designs.
+description: 사용자가 "UI 컴포넌트 만들어줘", "페이지 디자인해줘", "디자인 수정해줘", "스타일 변경해줘", "새 화면 만들어줘" 등 프론트엔드 디자인 작업을 요청하거나, CSS·HTML 템플릿·React 컴포넌트를 생성/수정할 때 활성화됩니다. 디자인 레퍼런스 이미지를 분석하여 새로운 디자인 생성 시 참조합니다.
 ---
 
 # Design Inspiration
 
-This skill ensures all frontend design work maintains visual consistency with the user's preferred design style by referencing the Design System document (`references/DESIGN.md`) and uploaded inspiration images before generating or modifying any UI code.
+이 스킬은 모든 프론트엔드 디자인 작업이 사용자가 선호하는 디자인 스타일과 시각적 일관성을 유지하도록 보장합니다. UI 코드를 생성하거나 수정하기 전에 디자인 시스템 문서(`references/DESIGN.md`)와 업로드된 인스피레이션 이미지를 참조합니다.
 
-## When This Skill Activates
+## 활성화 조건
 
-- Creating new pages, components, or screens
-- Modifying existing CSS, styles, or visual layouts
-- Building UI elements (cards, buttons, headers, forms, etc.)
-- Refactoring or redesigning frontend interfaces
-- Any task that produces visible UI output
+- 새 페이지, 컴포넌트, 화면 생성 시
+- 기존 CSS, 스타일, 시각적 레이아웃 수정 시
+- UI 요소(카드, 버튼, 헤더, 폼 등) 제작 시
+- 프론트엔드 인터페이스 리팩토링 또는 리디자인 시
+- 시각적 UI 결과물이 포함된 모든 작업
 
-## Workflow
+## 워크플로우
 
-### Step 0: Load Design System Document
+### Step 0: 디자인 시스템 문서 로드
 
-Before any design work, read the Design System document:
+디자인 작업 전, 디자인 시스템 문서를 읽습니다:
 
 ```
 .claude/skills/design-inspiration/references/DESIGN.md
 ```
 
-This is the **authoritative design specification** — "The Curated Executive" strategy. It defines:
+이 문서는 **공식 디자인 명세** — "큐레이티드 이그제큐티브" 전략입니다. 정의 내용:
 
-- **Color & Tonal Soul**: Executive Purple (`#5300b7`) + Success Gold (`#ffb95f`) palette
-- **The "No-Line" Rule**: No 1px borders — use background color shifts instead
-- **Typography**: Manrope for display/headlines, Pretendard/Inter for body
-- **Tonal Layering**: Surface elevation via background tones, not drop shadows
-- **Signature Components**: Buttons, cards, inputs, status chips specifications
-- **Do's and Don'ts**: Strict rules (no pure black, luxurious easing, asymmetric margins)
+- **색상 & 톤**: Executive Purple (`#5300b7`) + Success Gold (`#ffb95f`) 팔레트
+- **"No-Line" 규칙**: 1px 테두리 사용 금지 — 배경색 변화로 경계 표현
+- **타이포그래피**: 디스플레이/헤드라인은 Manrope, 본문은 Pretendard/Inter
+- **톤 레이어링**: 그림자 대신 배경 톤으로 입체감 표현
+- **시그니처 컴포넌트**: 버튼, 카드, 인풋, 상태 칩 명세
+- **Do & Don't**: 엄격한 규칙 (순수 검정 금지, 럭셔리 이징, 비대칭 여백)
 
-All design output MUST comply with DESIGN.md rules. When DESIGN.md conflicts with `globals.css`, DESIGN.md takes precedence for new work.
+모든 디자인 출력은 반드시 DESIGN.md 규칙을 준수해야 합니다. DESIGN.md와 `globals.css`가 충돌하면, 신규 작업에서는 DESIGN.md가 우선합니다.
 
-### Step 1: Load Reference Images
+### Step 1: 레퍼런스 이미지 로드
 
-Before writing any design-related code, read all image files in the `images/` directory relative to this skill:
+디자인 관련 코드를 작성하기 전, 이 스킬의 `images/` 디렉토리에 있는 모든 이미지 파일을 읽습니다:
 
 ```
 .claude/skills/design-inspiration/images/
 ```
 
-Use the Read tool to view each image file (PNG, JPG, WebP, SVG). These images represent the user's desired design direction.
+Read 도구를 사용하여 각 이미지 파일(PNG, JPG, WebP, SVG)을 확인합니다. 이 이미지들은 사용자가 원하는 디자인 방향을 나타냅니다.
 
-If the `images/` folder is empty, notify the user:
+`images/` 폴더가 비어있으면 사용자에게 알립니다:
 > "Design Inspiration 폴더(`/.claude/skills/design-inspiration/images/`)에 레퍼런스 이미지가 없습니다. 원하는 디자인 스타일의 이미지를 추가해주세요."
 
-Then proceed without image references, falling back to the project's existing style tokens in `globals.css`.
+그 후 이미지 레퍼런스 없이 진행하며, `globals.css`의 기존 스타일 토큰을 기반으로 작업합니다.
 
-### Step 2: Analyze Design Patterns
+### Step 2: 디자인 패턴 분석
 
-Combine insights from DESIGN.md and reference images to build a unified design direction:
+DESIGN.md와 레퍼런스 이미지의 인사이트를 결합하여 통합 디자인 방향을 수립합니다:
 
-**From DESIGN.md (always apply):**
-- Executive Purple + Soft Gold color system
-- No-Line Rule (background shifts, not borders)
-- Tonal Layering for elevation (surface → surface_container_lowest → surface_container_high)
-- Luxurious Ease transitions (`cubic-bezier(0.22, 1, 0.36, 1)`)
-- Manrope headlines, Pretendard body, max 3 hierarchy levels per view
+**DESIGN.md 기반 (항상 적용):**
+- Executive Purple + Soft Gold 색상 시스템
+- No-Line 규칙 (테두리 대신 배경색 변화)
+- 톤 레이어링으로 입체감 표현 (surface → surface_container_lowest → surface_container_high)
+- 럭셔리 이즈 트랜지션 (`cubic-bezier(0.22, 1, 0.36, 1)`)
+- Manrope 헤드라인, Pretendard 본문, 뷰당 최대 3단계 계층
 
-**From reference images (extract and layer on top):**
-- Color accent variations or additional palette notes
-- Spacing & Layout rhythm, grid structure, whitespace usage
-- Component shapes, specific border-radius preferences
-- Visual effects: gradients, overlays, blur, glassmorphism usage
-- Overall tone refinements
+**레퍼런스 이미지 기반 (위에 추가 적용):**
+- 색상 액센트 변형 또는 추가 팔레트 참고사항
+- 간격 & 레이아웃 리듬, 그리드 구조, 여백 활용
+- 컴포넌트 형태, 특정 border-radius 선호도
+- 시각 효과: 그라디언트, 오버레이, 블러, 글래스모피즘 활용
+- 전체적인 톤 보정
 
-### Step 3: Apply to Output
+### Step 3: 결과물에 적용
 
-When generating or modifying frontend code:
+프론트엔드 코드를 생성하거나 수정할 때:
 
-1. **Match the visual tone** of the reference images — not a pixel copy, but the same design language
-2. **Reuse existing project tokens** from `globals.css` where they align with the references
-3. **Propose new tokens** only when the references demand a style not covered by existing variables
-4. **Maintain consistency** across all generated components in the same session
+1. **시각적 톤을 맞춤** — 레퍼런스 이미지를 픽셀 단위로 복사하는 것이 아니라, 동일한 디자인 언어를 사용
+2. **기존 프로젝트 토큰 재사용** — `globals.css`의 토큰이 레퍼런스와 맞는 경우 활용
+3. **새 토큰은 필요할 때만 제안** — 기존 변수로 커버되지 않는 스타일이 레퍼런스에 요구될 때만
+4. **일관성 유지** — 같은 세션 내 생성된 모든 컴포넌트 간 시각적 통일
 
-### Step 4: Explain Design Decisions
+### Step 4: 디자인 결정 설명
 
-After generating code, briefly note which reference image(s) influenced key decisions:
+코드 생성 후, 어떤 레퍼런스 이미지가 주요 결정에 영향을 주었는지 간략히 설명합니다:
 - "레퍼런스 이미지의 둥근 카드 스타일을 반영하여 `border-radius: 24px` 적용"
 - "레퍼런스의 색상 팔레트에서 추출한 그라디언트 사용"
 
-## Priority Order (Conflict Resolution)
+## 우선순위 (충돌 해결)
 
-When sources conflict, apply in this priority:
+소스 간 충돌 시, 다음 우선순위로 적용합니다:
 
-1. **`references/DESIGN.md`** — The authoritative design system (highest priority)
-2. **`images/` reference images** — Visual direction supplements
-3. **`globals.css`** — Existing project tokens (align or propose updates)
-4. **CLAUDE.md Style Guide** — General project conventions
+1. **`references/DESIGN.md`** — 공식 디자인 시스템 (최고 우선순위)
+2. **`images/` 레퍼런스 이미지** — 시각적 방향 보충 자료
+3. **`globals.css`** — 기존 프로젝트 토큰 (정렬하거나 업데이트 제안)
+4. **CLAUDE.md 스타일 가이드** — 일반 프로젝트 규칙
 
-For **new components**: follow DESIGN.md strictly, supplemented by images.
-For **existing component modifications**: maintain current tokens unless user explicitly requests a redesign toward DESIGN.md.
+**신규 컴포넌트**: DESIGN.md를 엄격히 따르고, 이미지로 보충합니다.
+**기존 컴포넌트 수정**: 사용자가 명시적으로 DESIGN.md 방향으로 리디자인을 요청하지 않는 한 현재 토큰을 유지합니다.
 
-## Managing Reference Images
+## 레퍼런스 이미지 관리
 
-The `images/` folder accepts:
-- **Screenshots** of websites or apps with desired aesthetics
-- **Dribbble/Behance exports** of UI inspiration
-- **Mood board images** showing color/typography preferences
-- **Existing design mockups** (Figma exports, etc.)
+`images/` 폴더에 추가 가능한 파일:
+- **웹사이트/앱 스크린샷** — 원하는 미감의 스크린샷
+- **Dribbble/Behance 내보내기** — UI 인스피레이션
+- **무드보드 이미지** — 색상/타이포그래피 선호도
+- **기존 디자인 목업** — Figma 내보내기 등
 
-Naming convention (recommended):
-- `01-overall-style.png` — General mood/direction
-- `02-card-design.png` — Specific component reference
-- `03-color-palette.png` — Color scheme reference
-- `dashboard-ref.png` — Page-specific reference
+네이밍 규칙 (권장):
+- `01-overall-style.png` — 전체 무드/방향
+- `02-card-design.png` — 특정 컴포넌트 레퍼런스
+- `03-color-palette.png` — 색상 스킴 레퍼런스
+- `dashboard-ref.png` — 페이지별 레퍼런스
 
-## Additional Resources
+## 추가 리소스
 
-### Reference Files
+### 참조 파일
 
-- **`references/DESIGN.md`** — The Curated Executive design system (color, typography, elevation, components, do's/don'ts)
-- **`references/analysis-guide.md`** — How to extract design patterns from reference images systematically
+- **`references/DESIGN.md`** — 큐레이티드 이그제큐티브 디자인 시스템 (색상, 타이포그래피, 입체감, 컴포넌트, Do/Don't)
+- **`references/analysis-guide.md`** — 레퍼런스 이미지에서 체계적으로 디자인 패턴을 추출하는 방법
