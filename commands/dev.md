@@ -10,9 +10,19 @@ argument-hint: "<태스크 ID: 예) 008-login>"
 
 ---
 
+## 경로 규약 ← 모든 단계 공통
+
+모든 `output/...` 경로는 **프로젝트 루트 기준 절대 경로**로 해석한다. cwd가 프로젝트 루트가 아닐 때도 동작하도록 보장한다.
+
+- 프로젝트 루트 확인 순서:
+  1. `${CLAUDE_PROJECT_DIR}` 환경변수
+  2. 없으면 cwd에서 위로 올라가며 `.claude/` 폴더가 있는 디렉토리
+- 메인 어시스턴트는 Agent 프롬프트에 전달하기 전, `{PROJECT_ROOT}` 플레이스홀더를 **실제 절대 경로**로 치환한다.
+- 단, `history.json` 안에 **저장하는** `path` 필드는 dashboard 호환을 위해 **상대 경로 그대로** 둔다. 파일 읽기/쓰기에만 절대 경로를 사용한다.
+
 ## 실행 방법
 
-1. `output/tasks/$ARGUMENTS/brief.md` 파일이 존재하는지 확인
+1. `{PROJECT_ROOT}/output/tasks/$ARGUMENTS/brief.md` 파일이 존재하는지 확인
 2. 존재하지 않으면 "brief.md가 없습니다. `/experiment:pm`으로 먼저 기획하세요." 안내 후 중단
 3. 존재하면 **백그라운드 Agent를 생성**하여 전체 파이프라인 실행
 
@@ -29,7 +39,11 @@ Agent(
 
 ### Agent 프롬프트
 
-아래 내용을 Agent의 prompt로 전달한다. `{TASK_ID}`는 `$ARGUMENTS`로, `{BRIEF_PATH}`와 `{TASK_FOLDER}`는 실제 절대 경로로 치환한다.
+아래 내용을 Agent의 prompt로 전달한다. 치환 규칙:
+- `{PROJECT_ROOT}`: 프로젝트 루트 절대 경로 (위 "경로 규약" 참조).
+- `{TASK_ID}`: `$ARGUMENTS`
+- `{BRIEF_PATH}`: `{PROJECT_ROOT}/output/tasks/{TASK_ID}/brief.md` (실제 절대 경로로 치환)
+- `{TASK_FOLDER}`: `{PROJECT_ROOT}/output/tasks/{TASK_ID}` (실제 절대 경로로 치환)
 
 **수정 사항이 있는 경우**: PM에서 `__DEV_MODIFICATIONS__`로 전달된 수정 피드백이 있으면, `{MODIFICATIONS}` 섹션을 Agent 프롬프트에 추가한다. 없으면 해당 섹션을 생략한다.
 
@@ -130,14 +144,16 @@ Agent(
 
 complete.md 저장 후 즉시 수행합니다. 이 단계를 빠뜨리면 대시보드에 완료 상태가 반영되지 않습니다.
 
+> 모든 파일 작업은 절대 경로(`{PROJECT_ROOT}/output/...`)를 사용합니다. 단, JSON 안의 `path` 필드는 상대 경로 그대로 저장합니다 (dashboard 호환).
+
 실행 순서:
-1. `output/history.json` Read
+1. `{PROJECT_ROOT}/output/history.json` Read
 2. `{TASK_ID}`에 해당하는 태스크의 `logs` 배열에 아래 항목 추가:
    ```json
    { "phase": "개발", "status": "완료", "date": "[날짜]", "note": "구현 + 에러체크 완료" }
    ```
 3. 해당 태스크의 `artifacts` 배열에 `"complete.md"` 추가 (이미 없는 경우만)
-4. Write로 저장
+4. Write로 저장 (대상: `{PROJECT_ROOT}/output/history.json`)
 5. Read로 재확인 — logs와 artifacts가 실제로 추가됐는지 검증
 ```
 
@@ -150,7 +166,7 @@ Agent 생성 후 메인 대화에 다음을 출력한다:
 ```
 백그라운드에서 개발을 시작했습니다.
 - 태스크: $ARGUMENTS
-- 입력: output/tasks/$ARGUMENTS/brief.md
+- 입력: {PROJECT_ROOT}/output/tasks/$ARGUMENTS/brief.md
 - 파이프라인: 범위 파악 → 계획 → 구현 → 에러 체크
 - 산출물: complete.md (완료 시)
 

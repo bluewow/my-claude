@@ -10,6 +10,16 @@ argument-hint: "<아이디어, 기능, 또는 개선 요청>"
 
 ---
 
+## 경로 규약 ← 모든 단계 공통
+
+모든 `output/...` 경로는 **프로젝트 루트 기준 절대 경로**로 해석한다. cwd가 프로젝트 루트가 아닐 때도 동작하도록 보장한다.
+
+- 프로젝트 루트 확인 순서:
+  1. `${CLAUDE_PROJECT_DIR}` 환경변수
+  2. 없으면 cwd에서 위로 올라가며 `.claude/` 폴더가 있는 디렉토리
+- 메인 어시스턴트는 Agent 프롬프트에 전달하기 전, `{PROJECT_ROOT}` 플레이스홀더를 **실제 절대 경로**로 치환한다.
+- 단, `history.json` 안에 **저장하는** `path` 필드(예: `"path": "output/tasks/..."`)는 dashboard 호환을 위해 **상대 경로 그대로** 둔다. 파일 읽기/쓰기에만 절대 경로를 사용한다.
+
 ## 실행 방법
 
 `$ARGUMENTS`를 분석하여 **foreground Agent를 생성**합니다.
@@ -28,7 +38,9 @@ Agent(
 
 ### Agent 프롬프트
 
-아래 내용을 Agent의 prompt로 전달한다. `{REQUEST}`는 `$ARGUMENTS` 전체를 그대로 삽입한다.
+아래 내용을 Agent의 prompt로 전달한다. 치환 규칙:
+- `{REQUEST}`: `$ARGUMENTS` 전체를 그대로 삽입
+- `{PROJECT_ROOT}`: 프로젝트 루트 절대 경로 (위 "경로 규약" 참조). 프롬프트 안의 모든 `{PROJECT_ROOT}` 출현부를 실제 절대 경로로 치환.
 
 ---
 
@@ -45,8 +57,10 @@ Agent(
 
 1. 루트 CLAUDE.md를 읽고 프로젝트 컨텍스트, 기술 스택, 구조, 스타일 가이드 파악
 2. CLAUDE.md가 없으면 "/setup:init 실행이 필요합니다" 안내 후 중단
-3. output/history.json을 읽어 기존 태스크 목록과 마지막 ID 번호 확인
+3. `{PROJECT_ROOT}/output/history.json`을 읽어 기존 태스크 목록과 마지막 ID 번호 확인 (파일이 없으면 빈 배열 `[]`로 새로 생성)
 4. 디자인/UI 관련 요청이면 **design-system** 스킬을 활성화해 토큰·규칙을 먼저 로드 (idea.html/design.html 생성과 brief.md 의 스타일 명세에 반영)
+
+> 모든 파일 작업은 절대 경로(`{PROJECT_ROOT}/output/...`)를 사용합니다. 단, JSON 안의 `path` 필드는 상대 경로 그대로 저장합니다 (dashboard 호환).
 
 ## Step 2: 유형 감지
 
@@ -102,20 +116,20 @@ AskUserQuestion 가독성 규칙:
 
 ## Step 6: 기존 태스크 확인
 
-output/history.json에서 유사한 주제의 태스크가 있는지 확인합니다.
+`{PROJECT_ROOT}/output/history.json`에서 유사한 주제의 태스크가 있는지 확인합니다.
 - 유사 태스크 있음 → AskUserQuestion으로 확인 (업데이트 or 새 태스크)
 - 없음 → Step 7 진행
 
 ## Step 7: 산출물 생성 + history.json 기록
 
 ### 7-1. ID 채번
-- output/history.json에서 마지막 ID + 1
+- `{PROJECT_ROOT}/output/history.json`에서 마지막 ID + 1
 - ID 형식: [3자리숫자]-[한국어slug] (예: 008-로그인, 009-대시보드-개선)
 - slug은 한국어 명사를 하이픈으로 연결 (띄어쓰기 대신 하이픈)
 
 ### 7-2. 폴더 생성 + 산출물 저장
 
-output/tasks/[ID]-[한국어slug]/ 폴더를 생성합니다.
+`{PROJECT_ROOT}/output/tasks/[ID]-[한국어slug]/` 폴더를 생성합니다.
 
 #### 신규 기능 → idea.html + brief.md
 
@@ -194,12 +208,12 @@ brief.md:
 이 단계를 빠뜨리면 대시보드에 태스크가 표시되지 않습니다.
 
 실행 순서:
-1. `output/history.json` Read
+1. `{PROJECT_ROOT}/output/history.json` Read
 2. 배열 끝에 아래 엔트리 추가
-3. Write로 저장
+3. Write로 저장 (대상: `{PROJECT_ROOT}/output/history.json`)
 4. Read로 재확인 — 엔트리가 실제로 추가됐는지 검증
 
-추가할 엔트리:
+추가할 엔트리 (`path` 필드는 상대 경로 그대로 유지):
 
 ```
 {
@@ -222,7 +236,7 @@ brief.md:
 ### ✅ Step 7 완료 체크리스트
 
 다음이 모두 완료된 후 Step 8로 진행합니다:
-- [ ] 폴더 생성: `output/tasks/[ID]-[slug]/`
+- [ ] 폴더 생성: `{PROJECT_ROOT}/output/tasks/[ID]-[slug]/`
 - [ ] 산출물 저장: `idea.html` 또는 `design.html`
 - [ ] `brief.md` 저장
 - [ ] `history.json` 업데이트 + Read로 검증 완료
@@ -236,8 +250,8 @@ brief.md:
 먼저 텍스트로 안내:
 ```
 [기획서|디자인 시안]가 완성되었습니다.
-- 시각 산출물: output/tasks/[ID]-[한국어slug]/[idea|design].html
-- 개발 입력물: output/tasks/[ID]-[한국어slug]/brief.md
+- 시각 산출물: {PROJECT_ROOT}/output/tasks/[ID]-[한국어slug]/[idea|design].html
+- 개발 입력물: {PROJECT_ROOT}/output/tasks/[ID]-[한국어slug]/brief.md
 
 [idea|design].html을 브라우저에서 확인해 주세요.
 ```
