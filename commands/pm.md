@@ -293,7 +293,7 @@ question: "어떤 부분을 수정해야 하나요?"
 메인 대화에서 이 마커들을 감지하여 /dev 실행 시 수정 사항을 함께 전달한다.
 
 ### 폐기 시
-1. output/history.json을 Read → 해당 태스크의 `status` 필드를 `"폐기"`로 변경 → logs에 폐기 기록 추가 → Write
+1. `{PROJECT_ROOT}/output/history.json`을 Read → 해당 태스크의 `status` 필드를 `"폐기"`로 변경 → logs에 폐기 기록 추가 → Write
    ```json
    { "phase": "폐기", "status": "폐기", "date": "[오늘 날짜]", "note": "태스크 폐기" }
    ```
@@ -301,7 +301,7 @@ question: "어떤 부분을 수정해야 하나요?"
 3. 다음을 안내하고 종료:
    ```
    태스크가 폐기 처리되었습니다: [ID]-[slug]
-   산출물은 output/tasks/[ID]-[slug]/에 보존됩니다.
+   산출물은 {PROJECT_ROOT}/output/tasks/[ID]-[slug]/에 보존됩니다.
    ```
 
 ## 규칙
