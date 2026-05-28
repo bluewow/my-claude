@@ -116,7 +116,7 @@
         <div class="bg-zinc-800/50 border border-zinc-700 p-4 rounded-lg flex items-start space-x-3 max-w-3xl">
           <span class="text-sm">💡</span>
           <p class="text-xs text-zinc-200 leading-relaxed">
-            모든 킷은 <code class="text-zinc-50 bg-zinc-900/70 px-1 py-0.5 rounded">.claude/</code> 내부 파일들의 약속된 전제와 정적 해석 룰을 따라 작동합니다. 최종 산출물은 프로젝트 루트의 <code class="text-zinc-50 bg-zinc-900/70 px-1 py-0.5 rounded">output/</code> 폴더로 격리되어 정렬되며, <code class="text-zinc-50 bg-zinc-900/70 px-1 py-0.5 rounded">output/dashboard.html</code> 을 브라우저로 열어 한눈에 추적할 수 있습니다.
+            모든 킷은 <code class="text-zinc-50 bg-zinc-900/70 px-1 py-0.5 rounded">.claude/</code> 내부 파일들의 약속된 전제와 정적 해석 룰을 따라 작동합니다. 최종 산출물은 프로젝트 루트의 <code class="text-zinc-50 bg-zinc-900/70 px-1 py-0.5 rounded">.output/</code> 폴더로 격리되어 정렬되며, <code class="text-zinc-50 bg-zinc-900/70 px-1 py-0.5 rounded">.output/dashboard.html</code> 을 브라우저로 열어 한눈에 추적할 수 있습니다.
           </p>
         </div>
       </section>
@@ -272,13 +272,13 @@
                 <span class="text-[10px] text-indigo-200 bg-indigo-950/60 px-2 py-0.5 rounded border border-indigo-800">최초 1회 부트스트랩</span>
               </div>
               <p class="text-xs text-zinc-200 leading-relaxed">
-                프로젝트 루트를 스캔해 모든 에이전트(/pm, /dev, /do)가 참조할 단일 진실 소스인 <code class="text-zinc-50">CLAUDE.md</code> 와 대시보드용 <code class="text-zinc-50">output/</code> 디렉토리(<code>meta.json</code> · <code>history.json</code> · <code>dashboard.html</code>)를 초기화합니다.
+                프로젝트 루트를 스캔해 모든 에이전트(/pm, /dev, /do)가 참조할 단일 진실 소스인 <code class="text-zinc-50">CLAUDE.md</code> 와 대시보드용 <code class="text-zinc-50">.output/</code> 디렉토리(<code>meta.json</code> · <code>history.json</code> · <code>dashboard.html</code>)를 초기화합니다.
               </p>
               <div class="bg-zinc-900 p-4 rounded border border-zinc-800 font-mono text-[11px] text-zinc-200 space-y-1">
                 <div>- 빌드 파일 감지 (package.json / pom.xml / pyproject.toml / go.mod 등)</div>
                 <div>- 단일/멀티 프로젝트 자동 인식 → <code class="text-zinc-50">meta.json</code> 의 <code class="text-zinc-50">projects[]</code> 배열로 표현</div>
                 <div>- 코드 컨벤션 · 스타일 토큰 · 빌드 명령어 추출 후 CLAUDE.md 생성</div>
-                <div>- <code class="text-zinc-50">.claude/templates/dashboard-template.html</code> → <code class="text-zinc-50">output/dashboard.html</code> 로 복사</div>
+                <div>- <code class="text-zinc-50">.claude/templates/dashboard-template.html</code> → <code class="text-zinc-50">.output/dashboard.html</code> 로 복사</div>
               </div>
             </div>
 
@@ -334,7 +334,7 @@
           <h2 class="text-xl font-bold text-zinc-50">대시보드 (3-탭 구조)</h2>
         </div>
         <p class="text-sm text-zinc-200 leading-relaxed max-w-3xl">
-          <code class="text-zinc-50">output/dashboard.html</code> 은 새로고침으로만 동기화되는 정적 HTML 입니다. 폴링·웹소켓 없음 — 페이지 로딩 시 <code class="text-zinc-50">history.json</code> 과 <code class="text-zinc-50">meta.json</code> 을 1회 fetch 한 뒤 모든 데이터를 확정합니다.
+          <code class="text-zinc-50">.output/dashboard.html</code> 은 새로고침으로만 동기화되는 정적 HTML 입니다. 폴링·웹소켓 없음 — 페이지 로딩 시 <code class="text-zinc-50">history.json</code> 과 <code class="text-zinc-50">meta.json</code> 을 1회 fetch 한 뒤 모든 데이터를 확정합니다.
         </p>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -440,7 +440,7 @@
                   <span class="folder-state-icon">▼</span> <span>📁 setup/</span>
                 </div>
                 <div id="dir-setup" class="pl-4 border-l border-zinc-700 ml-2 space-y-1">
-                  <div onclick="showFileMeta('setup/init.md', '프로젝트 부트스트랩', '프로젝트 스캔 → CLAUDE.md 생성 → output 디렉토리(meta.json · history.json · dashboard.html) 초기화. 최초 1회 실행.')" class="file-item-doc text-zinc-400 hover:text-zinc-100 cursor-pointer py-0.5 flex items-center space-x-1.5">
+                  <div onclick="showFileMeta('setup/init.md', '프로젝트 부트스트랩', '프로젝트 스캔 → CLAUDE.md 생성 → .output 디렉토리(meta.json · history.json · dashboard.html) 초기화. 최초 1회 실행.')" class="file-item-doc text-zinc-400 hover:text-zinc-100 cursor-pointer py-0.5 flex items-center space-x-1.5">
                     <span>📄</span> <span>init.md</span>
                   </div>
                   <div onclick="showFileMeta('setup/create-nextjs.md', 'Next.js 프로젝트 초기 세팅', 'shadcn/ui, VAC 패턴, Zustand, TanStack Query 기반 보일러플레이트 즉시 생성.')" class="file-item-doc text-zinc-400 hover:text-zinc-100 cursor-pointer py-0.5 flex items-center space-x-1.5">
@@ -492,7 +492,7 @@
                 <div onclick="showFileMeta('templates/design-template.html', '디자인 Before/After 템플릿', '/pm 의 기존 개선 유형에서 사용. CSS로 현재/개선안을 재현, highlight-change로 변경 부분 강조.')" class="file-item-doc text-zinc-400 hover:text-zinc-100 cursor-pointer py-0.5 flex items-center space-x-1.5">
                   <span>🎨</span> <span>design-template.html</span>
                 </div>
-                <div onclick="showFileMeta('templates/dashboard-template.html', '3-탭 대시보드 템플릿', '/setup:init 시 output/dashboard.html 로 복사. 개요·진행내역·산출물 탭과 모달 뷰어 포함.')" class="file-item-doc text-zinc-400 hover:text-zinc-100 cursor-pointer py-0.5 flex items-center space-x-1.5">
+                <div onclick="showFileMeta('templates/dashboard-template.html', '3-탭 대시보드 템플릿', '/setup:init 시 .output/dashboard.html 로 복사. 개요·진행내역·산출물 탭과 모달 뷰어 포함.')" class="file-item-doc text-zinc-400 hover:text-zinc-100 cursor-pointer py-0.5 flex items-center space-x-1.5">
                   <span>📊</span> <span>dashboard-template.html</span>
                 </div>
                 <div onclick="showFileMeta('templates/onepager-template.html', '원페이저 표준 템플릿', '/setup:onepager 가 채워넣는 사업계획서 기본 골격.')" class="file-item-doc text-zinc-400 hover:text-zinc-100 cursor-pointer py-0.5 flex items-center space-x-1.5">
@@ -616,7 +616,7 @@
     <span class="text-indigo-300">"id"</span>: <span class="text-emerald-300">"001-대시보드-개선"</span>,
     <span class="text-indigo-300">"slug"</span>: <span class="text-emerald-300">"대시보드-개선"</span>,
     <span class="text-indigo-300">"name"</span>: <span class="text-emerald-300">"대시보드 개선"</span>,
-    <span class="text-indigo-300">"path"</span>: <span class="text-emerald-300">"output/tasks/001-대시보드-개선"</span>,
+    <span class="text-indigo-300">"path"</span>: <span class="text-emerald-300">".output/tasks/001-대시보드-개선"</span>,
     <span class="text-indigo-300">"artifacts"</span>: [
       <span class="text-emerald-300">"design.html"</span>, <span class="text-emerald-300">"brief.md"</span>, <span class="text-emerald-300">"complete.md"</span>
     ],
@@ -769,7 +769,7 @@
       },
       pm: {
         header: '기획안 구체화 (/pm 커맨드)',
-        body: '질의응답을 주도적으로 돌리며 추가하려는 피처의 요구 사양과 성격을 분석하여 draft 형태를 갖춘 뒤, 최종 명세 파일인 output/tasks/.../brief.md로 고속 배출 및 잠금 대기 처리합니다. 승인 시 __AUTO_DEV__ 마커로 /dev 가 자동 트리거됩니다.'
+        body: '질의응답을 주도적으로 돌리며 추가하려는 피처의 요구 사양과 성격을 분석하여 draft 형태를 갖춘 뒤, 최종 명세 파일인 .output/tasks/.../brief.md로 고속 배출 및 잠금 대기 처리합니다. 승인 시 __AUTO_DEV__ 마커로 /dev 가 자동 트리거됩니다.'
       },
       dev: {
         header: '백그라운드 자동 코딩 (/dev 커맨드)',

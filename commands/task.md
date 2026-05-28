@@ -31,8 +31,8 @@ argument-hint: "<요청> [--mode plan|do] [--build]"
 
 ### 1-2. ID 채번
 
-`{PROJECT_ROOT}/.claude/output/plans/` 폴더가 없으면 먼저 mkdir + `index.html` 초기 생성 (인덱스가 없는 경우만 — `<ul class="entries"><!-- AUTO-ENTRIES-START --><!-- AUTO-ENTRIES-END --></ul>` 골격 포함).
-`{PROJECT_ROOT}/.claude/output/plans/*.html` 글로빙 (`index.html` 제외) → 개수 + 1 → `[3자리]-[한국어slug].html`. slug 은 요청 핵심 키워드를 한국어 하이픈 연결.
+`{PROJECT_ROOT}/.output/plans/` 폴더가 없으면 먼저 mkdir + `index.html` 초기 생성 (인덱스가 없는 경우만 — `<ul class="entries"><!-- AUTO-ENTRIES-START --><!-- AUTO-ENTRIES-END --></ul>` 골격 포함).
+`{PROJECT_ROOT}/.output/plans/*.html` 글로빙 (`index.html` 제외) → 개수 + 1 → `[3자리]-[한국어slug].html`. slug 은 요청 핵심 키워드를 한국어 하이픈 연결.
 
 ### 1-3. Q&A 통합 라운드 (사용자 대기 1회)
 
@@ -53,11 +53,11 @@ argument-hint: "<요청> [--mode plan|do] [--build]"
 **design-system** 스킬 활성화.
 
 1. 위 표의 템플릿 Read → `{{PLACEHOLDER}}` 치환. 실제 한국어 텍스트 + 실제 색상/폰트 값. design 이면 Before/After 변경 부분 highlight.
-2. `{PROJECT_ROOT}/.claude/output/plans/[ID]-[slug].html` 으로 Write.
+2. `{PROJECT_ROOT}/.output/plans/[ID]-[slug].html` 으로 Write.
 
 ### 1-5. 인덱스 갱신
 
-`{PROJECT_ROOT}/.claude/output/plans/index.html` Read → `<!-- AUTO-ENTRIES-START -->` 직후에 아래 엔트리를 삽입 (최근이 위). 기존 `<li class="empty">…</li>` 있으면 제거.
+`{PROJECT_ROOT}/.output/plans/index.html` Read → `<!-- AUTO-ENTRIES-START -->` 직후에 아래 엔트리를 삽입 (최근이 위). 기존 `<li class="empty">…</li>` 있으면 제거.
 
 ```html
       <li class="entry"><a href="[ID]-[slug].html" target="_blank"><span class="badge badge-[idea|design]">[idea|design]</span><span class="title">[요청 한 줄 요약]</span><time>[YYYY-MM-DD]</time></a></li>
@@ -68,7 +68,7 @@ argument-hint: "<요청> [--mode plan|do] [--build]"
 Bash 로:
 
 ```powershell
-Start-Process "{PROJECT_ROOT}/.claude/output/plans/[ID]-[slug].html"
+Start-Process "{PROJECT_ROOT}/.output/plans/[ID]-[slug].html"
 ```
 
 ### 1-7. 승인 분기

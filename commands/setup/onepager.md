@@ -7,7 +7,7 @@ argument-hint: "<주제 또는 프로젝트명>"
 
 **프로젝트를 30초 안에 파악할 수 있는 원페이저(6섹션)를 생성합니다.**
 
-결과물: `output/onepager.html`
+결과물: `.output/onepager.html`
 
 ---
 
@@ -29,7 +29,7 @@ argument-hint: "<주제 또는 프로젝트명>"
 ### Step 1: 사전 준비
 1. `.claude/templates/onepager-template.html` Read
 2. 루트 `CLAUDE.md` Read (프로젝트 컨텍스트 파악)
-3. `output/` 폴더 존재 확인
+3. `.output/` 폴더 존재 확인
 
 ### Step 2: Q&A
 AskUserQuestion으로 핵심 정보만 확인:
@@ -48,18 +48,18 @@ AskUserQuestion으로 핵심 정보만 확인:
 1. 템플릿의 모든 `{{PLACEHOLDER}}`를 실제 내용으로 교체
 2. 프로젝트 실제 색상/브랜드/기술 스택 사용
 3. 한국어로 작성
-4. `output/onepager.html`로 저장 (기존 파일 있으면 덮어쓰기 전 확인)
+4. `.output/onepager.html`로 저장 (기존 파일 있으면 덮어쓰기 전 확인)
 
 ### Step 5: 완료 안내
 ```
-원페이저 생성 완료 → output/onepager.html
+원페이저 생성 완료 → .output/onepager.html
 브라우저에서 확인해 주세요.
 ```
 
 ---
 
 ## 규칙
-- 코드 수정 금지 — `output/onepager.html`만 생성
+- 코드 수정 금지 — `.output/onepager.html`만 생성
 - 6섹션 구조 유지 (임의로 섹션 추가/제거 금지)
 - 모호한 점은 가정하지 말고 질문
 - 한국어

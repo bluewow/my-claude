@@ -43,7 +43,7 @@
 ├── templates/    # idea / design / dashboard / onepager HTML 템플릿
 └── settings.json # 권한 · 훅 · 환경변수
 
-output/
+.output/
 ├── meta.json     # 프로젝트 정보 (이름·스택·생성일) — 단일/멀티 프로젝트 모두 표현
 ├── history.json  # 태스크 이력 (모든 명령의 단일 진실 소스)
 ├── dashboard.html # 3-탭 대시보드 (개요·진행내역·산출물) — 새로고침으로 동기화

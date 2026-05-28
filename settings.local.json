@@ -5,11 +5,11 @@
   "permissions": {
     "allow": [
       "Edit(/.claude/skills/image-to-html/**)",
-      "Write(.claude/output/**)",
-      "Edit(.claude/output/**)",
-      "Read(.claude/output/**)",
+      "Write(**/.output/**)",
+      "Edit(**/.output/**)",
+      "Read(**/.output/**)",
       "Bash(mkdir:*)",
-      "Bash(rm:.claude/output/**)",
+      "Bash(rm:.output/**)",
       "Bash(Start-Process:*)",
       "Bash(start:*)"
     ],
@@ -17,7 +17,8 @@
       "c:\\project_2026\\fit-day\\.claude\\templates",
       "c:\\project_2026\\fit-day\\.claude\\commands",
       "c:\\project_2026\\fit-day\\.claude",
-      "c:\\project_2026\\fit-day\\.claude\\output"
+      "c:\\project_2026\\fit-day\\.output",
+      "c:\\project_2026\\fit-day\\.output\\plans"
     ]
   }
 }

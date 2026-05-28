@@ -232,7 +232,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 - `.env.example` 복사 + 주석으로 안내
 
 ### `.gitignore`
-- Next.js 기본 + `.env.local`, `/output/` 추가
+- Next.js 기본 + `.env.local`, `/.output/` 추가
 
 ---
 
